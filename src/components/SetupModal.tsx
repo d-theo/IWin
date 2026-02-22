@@ -1,11 +1,12 @@
-import React, { useState, useRef } from "react";
-import { View, FlatList, Dimensions } from "react-native";
-import { Modal, Portal, Text, Button, TextInput } from "react-native-paper";
+import React, { useState, useRef, useEffect } from "react";
+import { View, FlatList, Dimensions, Animated } from "react-native";
+import { Portal, Text, Button, TextInput, useTheme } from "react-native-paper";
 import { useGameStore } from "../store/gameStore";
 import { useNavigation } from "@react-navigation/native";
+import BaseModal from "./BaseModal";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const MODAL_PADDING = 40; // Ajuste selon ton style
+const MODAL_PADDING = 40;
 const ITEM_WIDTH = SCREEN_WIDTH - MODAL_PADDING;
 type Step = {
   id: string;
@@ -28,15 +29,31 @@ export const SetupModal = ({ visible, onDismiss }: Props) => {
   const [text, setText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const steps: Step[] = [
-    { id: "1", question: "Quel est le nom du jeu ?", key: "nom du jeu" },
-    { id: "2", question: "Nom du joueur", key: "nom du joueur" },
-    { id: "3", question: "Nom du joueur", key: "nom du joueur" },
-    { id: "4", question: "Nom du joueur", key: "nom du joueur" },
-    { id: "5", question: "Nom du joueur", key: "nom du joueur" },
-    { id: "6", question: "Nom du joueur", key: "nom du joueur" },
-    { id: "7", question: "Nom du joueur", key: "nom du joueur" },
-    { id: "8", question: "Nom du joueur", key: "nom du joueur" },
+    { id: "1", question: "Quel est le nom du jeu ?", key: "" },
+    { id: "2", question: "Nom du joueur", key: "" },
+    { id: "3", question: "Nom du joueur", key: "" },
+    { id: "4", question: "Nom du joueur", key: "" },
+    { id: "5", question: "Nom du joueur", key: "" },
+    { id: "6", question: "Nom du joueur", key: "" },
+    { id: "7", question: "Nom du joueur", key: "" },
+    { id: "8", question: "Nom du joueur", key: "" },
   ];
+
+  const bounceValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (visible) {
+      Animated.spring(bounceValue, {
+        toValue: 1,
+        friction: 4,
+        tension: 60,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      bounceValue.setValue(0);
+    }
+  }, [visible]);
+
   const createGame = useGameStore((s) => s.createGame);
 
   const goToNext = () => {
@@ -60,9 +77,10 @@ export const SetupModal = ({ visible, onDismiss }: Props) => {
       <Text variant="headlineSmall">{item.question}</Text>
       {item.key !== "done" && (
         <TextInput
+          autoFocus={currentIndex === 0}
           mode="outlined"
           label={item.key}
-          style={{ marginTop: 10 }}
+          style={{ marginTop: 10, backgroundColor: "white" }}
           onChangeText={(t) => setText(t)}
         />
       )}
@@ -126,34 +144,30 @@ export const SetupModal = ({ visible, onDismiss }: Props) => {
 
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={{
-          backgroundColor: "white",
-          margin: 20,
-          borderRadius: 8,
-        }}
-      >
-        <FlatList
-          ref={flatListRef}
-          data={steps}
-          renderItem={renderStep}
-          horizontal
-          pagingEnabled
-          scrollEnabled={false} // On bloque le swipe manuel pour forcer l'usage des boutons
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-        />
+      <BaseModal visible={visible} onDismiss={onDismiss} title="">
+        <Animated.View
+          style={{ transform: [{ scale: bounceValue }], opacity: bounceValue }}
+        >
+          <FlatList
+            ref={flatListRef}
+            data={steps}
+            renderItem={renderStep}
+            horizontal
+            pagingEnabled
+            scrollEnabled={false} // On bloque le swipe manuel pour forcer l'usage des boutons
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.id}
+          />
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            padding: 10,
-          }}
-        ></View>
-      </Modal>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              padding: 10,
+            }}
+          ></View>
+        </Animated.View>
+      </BaseModal>
     </Portal>
   );
 };

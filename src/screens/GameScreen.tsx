@@ -1,19 +1,20 @@
 import { FlatList, View } from "react-native";
-import {
-  Card,
-  IconButton,
-  MD3Colors,
-  PaperProvider,
-  Text,
-} from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 import { useGameStore } from "../store/gameStore";
 import { AddScore } from "../components/AddScore";
 import { useState } from "react";
+import PlayerCard from "../components/PlayerCard";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/types";
 
 const total = (scores: any[]) => scores.reduce((sum, s) => sum + s.value, 0);
 
-export default function GameScreen({ navigation }: any) {
+type Props = NativeStackScreenProps<RootStackParamList, "Game">;
+
+export default function GameScreen({ navigation }: Props) {
   const game = useGameStore((s) => s.game);
+  const endGame = useGameStore((s) => s.endGame);
+  const theme = useTheme();
   const addScore = useGameStore((s) => s.addScore);
   const [scoreAdder, setScoreAdder] = useState({
     adding: false,
@@ -34,56 +35,43 @@ export default function GameScreen({ navigation }: any) {
     });
   };
 
-  const handleAddScore = (score: number) => {
+  const handleAddScore = (score: number, shouldClose: boolean) => {
     const currentPlayerId = scoreAdder.currentPlayerId;
     addScore(currentPlayerId, score);
-    handleCloseScoreAdder();
+    if (shouldClose) handleCloseScoreAdder();
+  };
+
+  const handleEndGame = () => {
+    endGame();
+    navigation.replace("Setup");
   };
 
   if (!game) return null;
 
   return (
-    <PaperProvider>
+    <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
       <AddScore
         onAddScore={handleAddScore}
         isOpen={scoreAdder.adding}
         onClose={handleCloseScoreAdder}
       />
       <FlatList
-        contentContainerStyle={{ padding: 16, gap: 12 }}
         data={game.players}
         keyExtractor={(p) => p.id}
         renderItem={({ item }) => (
-          <Card>
-            <Card.Content>
-              <Text variant="titleLarge">{item.name}</Text>
-              <Text variant="headlineMedium">{total(item.scores)}</Text>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}
-              >
-                <IconButton
-                  icon="menu"
-                  iconColor={MD3Colors.primary10}
-                  size={20}
-                  onPress={() =>
-                    navigation.navigate("History", { playerId: item.id })
-                  }
-                />
-                <IconButton
-                  icon="plus-circle"
-                  iconColor={MD3Colors.primary10}
-                  size={20}
-                  onPress={() => handleOpenScoreAdder(item.id)}
-                />
-              </View>
-            </Card.Content>
-          </Card>
+          <PlayerCard
+            name={item.name}
+            onAdd={() => handleOpenScoreAdder(item.id)}
+            onHistory={() =>
+              navigation.navigate("History", { playerId: item.id })
+            }
+            score={total(item.scores)}
+          />
         )}
       />
-    </PaperProvider>
+      <Button mode="contained" style={{ margin: 40 }} onPress={handleEndGame}>
+        Finish game
+      </Button>
+    </View>
   );
 }

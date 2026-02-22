@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, TextInput, useTheme } from "react-native-paper";
 import { useGameStore } from "../store/gameStore";
 
 export default function EditScoreModal({ route, navigation }: any) {
@@ -19,8 +19,12 @@ export default function EditScoreModal({ route, navigation }: any) {
     navigation.goBack();
   };
 
+  const theme = useTheme();
+
   return (
-    <View style={{ padding: 16, gap: 12 }}>
+    <View
+      style={{ padding: 16, gap: 12, backgroundColor: theme.colors.background }}
+    >
       <TextInput
         label="Score"
         keyboardType="numeric"

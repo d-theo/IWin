@@ -8,22 +8,33 @@ type GameStore = {
   loadGame: () => Promise<void>;
   createGame: (name: string, players: string[]) => Promise<void>;
   addScore: (playerId: string, value: number) => Promise<void>;
-  resetGame: () => Promise<void>;
+  endGame: () => Promise<void>;
   deleteScore: (playerId: string, scoreId: string) => Promise<void>;
   updateScore: (
     playerId: string,
     scoreId: string,
     value: number,
   ) => Promise<void>;
+  gamesHistory: Game[];
 };
 
-const STORAGE_KEY = "active_game";
+const ACTIVE_KEY = "active_game";
+const HISTORY_KEY = "past_games";
 
 export const useGameStore = create<GameStore>((set, get) => ({
   game: null,
+  gamesHistory: [],
 
   loadGame: async () => {
-    const raw = await AsyncStorage.getItem(STORAGE_KEY);
+    const active = await AsyncStorage.getItem(ACTIVE_KEY);
+    const history = await AsyncStorage.getItem(HISTORY_KEY);
+
+    set({
+      game: active ? JSON.parse(active) : null,
+      gamesHistory: history ? JSON.parse(history) : [],
+    });
+
+    const raw = await AsyncStorage.getItem(ACTIVE_KEY);
     if (raw) set({ game: JSON.parse(raw) });
   },
 
@@ -38,8 +49,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         scores: [],
       })),
     };
-    console.log(game);
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(game));
+    await AsyncStorage.setItem(ACTIVE_KEY, JSON.stringify(game));
     set({ game });
   },
 
@@ -62,13 +72,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ),
     };
 
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    await AsyncStorage.setItem(ACTIVE_KEY, JSON.stringify(updated));
     set({ game: updated });
   },
 
-  resetGame: async () => {
-    await AsyncStorage.removeItem(STORAGE_KEY);
-    set({ game: null });
+  endGame: async () => {
+    await AsyncStorage.removeItem(ACTIVE_KEY);
+
+    const { game, gamesHistory } = get();
+    if (!game) return;
+
+    const updatedHistory = [game, ...gamesHistory];
+
+    await AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(updatedHistory));
+    await AsyncStorage.removeItem(ACTIVE_KEY);
+
+    set({
+      game: null,
+      gamesHistory: updatedHistory,
+    });
   },
 
   deleteScore: async (playerId, scoreId) => {
@@ -87,7 +109,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ),
     };
 
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    await AsyncStorage.setItem(ACTIVE_KEY, JSON.stringify(updated));
     set({ game: updated });
   },
 
@@ -109,7 +131,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ),
     };
 
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    await AsyncStorage.setItem(ACTIVE_KEY, JSON.stringify(updated));
     set({ game: updated });
   },
 }));
