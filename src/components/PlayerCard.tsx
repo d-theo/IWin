@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
-import { Surface, Text, IconButton, useTheme } from "react-native-paper";
+import { Surface, Text, useTheme } from "react-native-paper";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
   withSequence,
 } from "react-native-reanimated";
+import { IconButton } from "./atoms/IconButton";
 
 type Props = {
   name: string;
@@ -59,10 +60,8 @@ export default function PlayerCard({ name, score, onAdd, onHistory }: Props) {
         <View style={styles.actionSection}>
           <IconButton
             icon="plus"
-            mode="contained"
-            containerColor={theme.colors.tertiary}
-            iconColor="white"
-            size={30}
+            variant="tertiary"
+            size="l"
             onPress={onAdd}
             style={styles.addButton}
           />

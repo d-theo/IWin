@@ -75,18 +75,15 @@ export const SetupModal = ({ visible, onDismiss }: Props) => {
   const renderStep = ({ item }: { item: Step }) => (
     <View style={{ width: ITEM_WIDTH, padding: 20 }}>
       <Text variant="headlineSmall">{item.question}</Text>
-      {item.key !== "done" && (
-        <TextInput
-          autoFocus={currentIndex === 0}
-          mode="outlined"
-          label={item.key}
-          style={{ marginTop: 10, backgroundColor: "white" }}
-          onChangeText={(t) => setText(t)}
-        />
-      )}
+      <TextInput
+        autoFocus={currentIndex === 0}
+        mode="outlined"
+        label={item.key}
+        style={{ marginTop: 10 }}
+        onChangeText={(t) => setText(t)}
+      />
       <View
         style={{
-          display: "flex",
           justifyContent: "space-between",
           flexDirection: "row",
           paddingTop: 12,

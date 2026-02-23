@@ -20,4 +20,14 @@ export const theme = {
     },
     tertiaryContainer: "#2EC4B6",
   },
+  iconButton: {
+    sizes: {
+      s: 10,
+      m: 20,
+      l: 30,
+      xl: 40,
+    },
+  },
 };
+
+export type AppTheme = typeof theme;
