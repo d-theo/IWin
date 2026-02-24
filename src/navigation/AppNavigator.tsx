@@ -28,7 +28,7 @@ export default function AppNavigator() {
       <Stack.Screen
         name="History"
         component={HistoryScreen}
-        options={{ headerShown: false }}
+        options={{ title: "Comptage des points" }}
       />
       <Stack.Screen
         name="EditScore"
@@ -39,7 +39,7 @@ export default function AppNavigator() {
       <Stack.Screen
         name="GamesHistory"
         component={GamesHistoryScreen}
-        options={{ headerShown: false }}
+        options={{ title: "Toutes vos parties" }}
       />
     </Stack.Navigator>
   );

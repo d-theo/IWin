@@ -48,6 +48,7 @@ export const theme = {
     l: 4,
   },
   fontSize: {
+    xs: 14,
     s: 16,
     m: 24,
     l: 28,

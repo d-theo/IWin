@@ -18,7 +18,7 @@ const BaseModal = ({ visible, onDismiss, children }: Props) => {
         visible={visible}
         onDismiss={onDismiss}
         contentContainerStyle={{
-          margin: theme.spacing.l,
+          margin: 20,
           marginBottom: 300,
           borderRadius: theme.borderRadius.l,
           borderWidth: theme.borderWidth.m,

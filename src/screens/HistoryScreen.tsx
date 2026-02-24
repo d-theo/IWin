@@ -20,7 +20,10 @@ export default function HistoryScreen({ route, navigation }: Props) {
   return (
     <View style={{ backgroundColor: colors.background, flex: 1 }}>
       <FlatList
-        contentContainerStyle={{ padding: spacing.m, gap: spacing.s }}
+        contentContainerStyle={{
+          padding: spacing.m,
+          gap: spacing.s,
+        }}
         data={[...player.scores].reverse()}
         keyExtractor={(s) => s.id}
         renderItem={({ item }) => (
@@ -35,10 +38,11 @@ export default function HistoryScreen({ route, navigation }: Props) {
               <ScoreHistoryCard
                 score={item}
                 onEditScore={() =>
-                navigation.navigate("EditScore", {
-                  playerId: playerId,
-                  scoreId: item.id,
-                })}
+                  navigation.navigate("EditScore", {
+                    playerId: playerId,
+                    scoreId: item.id,
+                  })
+                }
                 onDeleteScore={() => deleteScore(playerId, item.id)}
               />
             </Card.Content>

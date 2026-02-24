@@ -28,7 +28,14 @@ export const StepItem = ({
 }: StepItemProps) => {
   const { spacing } = useTheme<AppTheme>();
   return (
-    <Surface style={{ width: ITEM_WIDTH, padding: spacing.m }} elevation={0}>
+    <Surface
+      style={{
+        width: ITEM_WIDTH,
+        flexDirection: "column",
+        padding: spacing.m,
+      }}
+      elevation={0}
+    >
       <Text variant="headlineSmall">{item.question}</Text>
       <TextInput
         autoFocus={currentIndex === 0}

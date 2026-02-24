@@ -70,7 +70,9 @@ export const SetupModal = ({ visible, onDismiss }: Props) => {
   };
 
   const handleEndConfig = () => {
-    const playerNames = gameObj.playerNames.filter((name) => name !== "");
+    const playerNames = [...gameObj.playerNames, text].filter(
+      (name) => name !== "",
+    );
     createGame(gameObj.name, playerNames);
     navigation.replace("Game");
   };
@@ -78,7 +80,10 @@ export const SetupModal = ({ visible, onDismiss }: Props) => {
   return (
     <BaseModal visible={visible} onDismiss={onDismiss} title="">
       <Animated.View
-        style={{ transform: [{ scale: bounceValue }], opacity: bounceValue }}
+        style={{
+          transform: [{ scale: bounceValue }],
+          opacity: bounceValue,
+        }}
       >
         <FlatList
           ref={flatListRef}

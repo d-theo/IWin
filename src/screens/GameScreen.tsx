@@ -63,6 +63,7 @@ export default function GameScreen({ navigation }: Props) {
           padding: theme.spacing.m,
           fontWeight: theme.fontWeight.black,
           color: theme.colors.primary,
+          marginTop: theme.spacing.xl,
         }}
       >
         {game.name}

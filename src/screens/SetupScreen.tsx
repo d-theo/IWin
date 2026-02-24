@@ -9,13 +9,15 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
+    flex: 1,
+    gap: 50,
   },
 });
 
 type Props = NativeStackScreenProps<RootStackParamList, "Setup">;
 
 export default function SetupScreen({ route, navigation }: Props) {
-  const shouldCreateGame = route.params.shouldSetup ?? true;
+  const shouldCreateGame = route?.params?.shouldSetup ?? true;
   const [visible, setVisible] = useState(shouldCreateGame);
   const { colors } = useTheme();
 
@@ -25,7 +27,10 @@ export default function SetupScreen({ route, navigation }: Props) {
       <Button mode="contained" onPress={() => setVisible(true)}>
         Démarrer
       </Button>
-      <Button mode="outlined" onPress={() => navigation.navigate("Game")}>
+      <Button
+        mode="outlined"
+        onPress={() => navigation.navigate("GamesHistory")}
+      >
         Voir vos parties précédentes
       </Button>
     </View>
