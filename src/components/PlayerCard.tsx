@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { Pressable } from "react-native";
 import { Surface, Text, useTheme } from "react-native-paper";
 import Animated, {
   useSharedValue,
@@ -8,6 +8,7 @@ import Animated, {
   withSequence,
 } from "react-native-reanimated";
 import { IconButton } from "./atoms/IconButton";
+import { AppTheme } from "../theme/theme";
 
 type Props = {
   name: string;
@@ -17,7 +18,7 @@ type Props = {
 };
 
 export default function PlayerCard({ name, score, onAdd, onHistory }: Props) {
-  const theme = useTheme();
+  const theme = useTheme<AppTheme>();
   const scale = useSharedValue(1);
 
   useEffect(() => {
@@ -35,78 +36,63 @@ export default function PlayerCard({ name, score, onAdd, onHistory }: Props) {
 
   return (
     <Surface
-      style={[styles.card, { borderColor: theme.colors.primary }]}
+      style={{
+        marginHorizontal: theme.spacing.m,
+        marginVertical: theme.spacing.xxs,
+        borderRadius: theme.borderRadius.m,
+        borderWidth: theme.borderWidth.m,
+        borderColor: theme.colors.primary,
+        backgroundColor: theme.colors.surface,
+        overflow: "hidden",
+      }}
       elevation={2}
     >
-      <Pressable onPress={onHistory} style={styles.pressableArea}>
-        <View style={styles.nameSection}>
-          <Text variant="titleMedium" style={styles.nameText} numberOfLines={1}>
+      <Pressable
+        onPress={onHistory}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          padding: theme.spacing.s,
+        }}
+      >
+        <Surface style={{ flex: 1 }} elevation={0}>
+          <Text
+            numberOfLines={1}
+            style={{
+              fontWeight: theme.fontWeight.black,
+              textTransform: "uppercase",
+              fontSize: theme.fontSize.m,
+            }}
+          >
             {name}
           </Text>
-        </View>
+        </Surface>
 
-        <View style={styles.scoreSection}>
+        <Surface style={{ flex: 1, alignItems: "flex-end" }} elevation={0}>
           <Animated.Text
             style={[
-              styles.scoreText,
-              { color: theme.colors.secondary },
+              {
+                fontSize: theme.fontSize.xl,
+                fontWeight: theme.fontWeight.black,
+                color: theme.colors.secondary,
+              },
               animatedScoreStyle,
             ]}
           >
             {score}
           </Animated.Text>
-        </View>
+        </Surface>
 
-        <View style={styles.actionSection}>
+        <Surface style={{ flex: 1, alignItems: "flex-end" }} elevation={0}>
           <IconButton
             icon="plus"
             variant="tertiary"
             size="l"
             onPress={onAdd}
-            style={styles.addButton}
+            style={{ margin: 0, borderRadius: theme.borderRadius.s }}
           />
-        </View>
+        </Surface>
       </Pressable>
     </Surface>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    marginHorizontal: 16,
-    marginVertical: 6, // Espace réduit pour en mettre plus
-    borderRadius: 18,
-    borderWidth: 3,
-    backgroundColor: "#FFFFFF", // fond du joueur todo
-    overflow: "hidden",
-  },
-  pressableArea: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 12, // Plus compact
-  },
-  nameSection: {
-    flex: 1,
-  },
-  nameText: {
-    fontWeight: "900",
-    textTransform: "uppercase",
-    fontSize: 24,
-  },
-  scoreSection: {
-    flex: 1,
-    alignItems: "flex-end",
-  },
-  scoreText: {
-    fontSize: 32,
-    fontWeight: "900",
-  },
-  actionSection: {
-    flex: 1,
-    alignItems: "flex-end",
-  },
-  addButton: {
-    margin: 0,
-    borderRadius: 12,
-  },
-});

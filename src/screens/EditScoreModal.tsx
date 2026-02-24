@@ -2,9 +2,11 @@ import { useState } from "react";
 import { View } from "react-native";
 import { Button, TextInput, useTheme } from "react-native-paper";
 import { useGameStore } from "../store/gameStore";
+import { AppTheme } from "../theme/theme";
 
 export default function EditScoreModal({ route, navigation }: any) {
   const { playerId, scoreId } = route.params;
+  const { colors, spacing } = useTheme<AppTheme>();
 
   const game = useGameStore((s) => s.game);
   const updateScore = useGameStore((s) => s.updateScore);
@@ -19,11 +21,13 @@ export default function EditScoreModal({ route, navigation }: any) {
     navigation.goBack();
   };
 
-  const theme = useTheme();
-
   return (
     <View
-      style={{ padding: 16, gap: 12, backgroundColor: theme.colors.background }}
+      style={{
+        padding: spacing.m,
+        gap: spacing.s,
+        backgroundColor: colors.background,
+      }}
     >
       <TextInput
         label="Score"

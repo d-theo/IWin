@@ -1,11 +1,12 @@
 import { FlatList, View } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 import { useGameStore } from "../store/gameStore";
 import { AddScore } from "../components/AddScore";
 import { useState } from "react";
 import PlayerCard from "../components/PlayerCard";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/types";
+import { AppTheme } from "../theme/theme";
 
 const total = (scores: any[]) => scores.reduce((sum, s) => sum + s.value, 0);
 
@@ -14,7 +15,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Game">;
 export default function GameScreen({ navigation }: Props) {
   const game = useGameStore((s) => s.game);
   const endGame = useGameStore((s) => s.endGame);
-  const theme = useTheme();
+  const theme = useTheme<AppTheme>();
   const addScore = useGameStore((s) => s.addScore);
   const [scoreAdder, setScoreAdder] = useState({
     adding: false,
@@ -43,7 +44,7 @@ export default function GameScreen({ navigation }: Props) {
 
   const handleEndGame = () => {
     endGame();
-    navigation.replace("Setup");
+    navigation.replace("Setup", { shouldSetup: false });
   };
 
   if (!game) return null;
@@ -55,6 +56,17 @@ export default function GameScreen({ navigation }: Props) {
         isOpen={scoreAdder.adding}
         onClose={handleCloseScoreAdder}
       />
+      <Text
+        variant="headlineMedium"
+        style={{
+          textAlign: "center",
+          padding: theme.spacing.m,
+          fontWeight: theme.fontWeight.black,
+          color: theme.colors.primary,
+        }}
+      >
+        {game.name}
+      </Text>
       <FlatList
         data={game.players}
         keyExtractor={(p) => p.id}

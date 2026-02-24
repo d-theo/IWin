@@ -1,7 +1,11 @@
 export type RootStackParamList = {
-  Setup: undefined;
+  Setup: {
+    shouldSetup: boolean | undefined;
+  };
 
   Game: undefined;
+
+  GamesHistory: undefined
 
   History: {
     playerId: string;

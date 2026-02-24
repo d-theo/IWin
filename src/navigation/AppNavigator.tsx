@@ -4,6 +4,7 @@ import GameScreen from "../screens/GameScreen";
 import HistoryScreen from "../screens/HistoryScreen";
 import EditScoreModal from "../screens/EditScoreModal";
 import { RootStackParamList } from "./types";
+import GamesHistoryScreen from "../screens/GamesHistoryScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -11,19 +12,34 @@ export default function AppNavigator() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: {},
-        headerTitleStyle: {
-          fontWeight: "bold",
-        },
+        headerTitleStyle: { fontWeight: "bold" },
       }}
     >
-      <Stack.Screen name="Setup" component={SetupScreen} />
-      <Stack.Screen name="Game" component={GameScreen} />
-      <Stack.Screen name="History" component={HistoryScreen} />
+      <Stack.Screen
+        name="Setup"
+        component={SetupScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Game"
+        component={GameScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="History"
+        component={HistoryScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="EditScore"
         component={EditScoreModal}
-        options={{ presentation: "modal" }}
+        options={{ presentation: "modal", title: "Modifier le score" }}
+      />
+
+      <Stack.Screen
+        name="GamesHistory"
+        component={GamesHistoryScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

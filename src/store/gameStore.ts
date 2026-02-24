@@ -10,118 +10,111 @@ type GameStore = {
   addScore: (playerId: string, value: number) => void;
   endGame: () => void;
   deleteScore: (playerId: string, scoreId: string) => void;
-  updateScore: (
-    playerId: string,
-    scoreId: string,
-    value: number,
-  ) => void;
+  updateScore: (playerId: string, scoreId: string, value: number) => void;
   gamesHistory: Game[];
 };
-
 
 export const useGameStore = create(
   persist<GameStore>(
     (set, get) => ({
-    game: null,
-    gamesHistory: [],
+      game: null,
+      gamesHistory: [],
 
-    createGame:  (name, playerNames) => {
-      const game: Game = {
-        id: uuid.v4(),
-        name,
-        createdAt: Date.now(),
-        players: playerNames.map((n) => ({
+      createGame: (name, playerNames) => {
+        const game: Game = {
           id: uuid.v4(),
-          name: n,
-          scores: [],
-        })),
-      };
-      set({ game });
-    },
+          name,
+          createdAt: Date.now(),
+          players: playerNames.map((n) => ({
+            id: uuid.v4(),
+            name: n,
+            scores: [],
+          })),
+        };
+        set({ game });
+      },
 
-    addScore:  (playerId, value) => {
-      const game = get().game;
-      if (!game) return;
+      addScore: (playerId, value) => {
+        const game = get().game;
+        if (!game) return;
 
-      const updated = {
-        ...game,
-        players: game.players.map((p) =>
-          p.id === playerId
-            ? {
-                ...p,
-                scores: [
-                  ...p.scores,
-                  { id: uuid.v4(), value, createdAt: Date.now() },
-                ],
-              }
-            : p,
-        ),
-      };
+        const updated = {
+          ...game,
+          players: game.players.map((p) =>
+            p.id === playerId
+              ? {
+                  ...p,
+                  scores: [
+                    ...p.scores,
+                    { id: uuid.v4(), value, createdAt: Date.now() },
+                  ],
+                }
+              : p,
+          ),
+        };
 
-      set({ game: updated });
-    },
+        set({ game: updated });
+      },
 
-    endGame:  () => {
+      endGame: () => {
+        const { game, gamesHistory } = get();
+        if (!game) return;
 
-      const { game, gamesHistory } = get();
-      if (!game) return;
+        const updatedHistory = [game, ...gamesHistory];
 
-      const updatedHistory = [game, ...gamesHistory];
+        set({
+          game: null,
+          gamesHistory: updatedHistory,
+        });
+      },
 
+      deleteScore: async (playerId, scoreId) => {
+        const game = get().game;
+        if (!game) return;
 
-      set({
-        game: null,
-        gamesHistory: updatedHistory,
-      });
-    },
+        const updated = {
+          ...game,
+          players: game.players.map((p) =>
+            p.id === playerId
+              ? {
+                  ...p,
+                  scores: p.scores.filter((s) => s.id !== scoreId),
+                }
+              : p,
+          ),
+        };
 
-    deleteScore: async (playerId, scoreId) => {
-      const game = get().game;
-      if (!game) return;
+        set({ game: updated });
+      },
 
-      const updated = {
-        ...game,
-        players: game.players.map((p) =>
-          p.id === playerId
-            ? {
-                ...p,
-                scores: p.scores.filter((s) => s.id !== scoreId),
-              }
-            : p,
-        ),
-      };
+      updateScore: (playerId, scoreId, value) => {
+        const game = get().game;
+        if (!game) return;
 
-      set({ game: updated });
-    },
+        const updated = {
+          ...game,
+          players: game.players.map((p) =>
+            p.id === playerId
+              ? {
+                  ...p,
+                  scores: p.scores.map((s) =>
+                    s.id === scoreId ? { ...s, value } : s,
+                  ),
+                }
+              : p,
+          ),
+        };
 
-    updateScore:  (playerId, scoreId, value) => {
-      const game = get().game;
-      if (!game) return;
-
-      const updated = {
-        ...game,
-        players: game.players.map((p) =>
-          p.id === playerId
-            ? {
-                ...p,
-                scores: p.scores.map((s) =>
-                  s.id === scoreId ? { ...s, value } : s,
-                ),
-              }
-            : p,
-        ),
-      };
-
-      set({ game: updated });
-    },
-  })
-  ,
-  {
-    name: "game-storage",
-    storage: createJSONStorage(() => AsyncStorage),
-    partialize: (state): any => ({
-      game: state.game,
-      gamesHistory: state.gamesHistory,
+        set({ game: updated });
+      },
     }),
-  }),
+    {
+      name: "game-storage",
+      storage: createJSONStorage(() => AsyncStorage),
+      partialize: (state): any => ({
+        game: state.game,
+        gamesHistory: state.gamesHistory,
+      }),
+    },
+  ),
 );

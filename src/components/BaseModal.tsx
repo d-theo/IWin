@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
-import { StyleSheet, View } from "react-native";
-import { Modal, Portal, useTheme, MD3Theme } from "react-native-paper";
+import { Modal, Portal, useTheme } from "react-native-paper";
+import { AppTheme } from "../theme/theme";
 
 type Props = {
   visible: boolean;
@@ -9,33 +9,26 @@ type Props = {
   children: ReactNode | ReactNode[];
 };
 
-const BaseModal = ({ visible, onDismiss, title, children }: Props) => {
-  const theme = useTheme();
-  const makeStyles = ({ colors }: MD3Theme) =>
-    StyleSheet.create({
-      container: {
-        margin: 20,
-        borderRadius: 24,
-        borderWidth: 4,
-        borderColor: theme.colors.outline,
-        padding: 0,
-        overflow: "hidden",
-        shadowColor: "#000",
-        shadowOpacity: 0.2,
-        marginBottom: 300,
-      },
-    });
-  const styles = makeStyles(theme);
+const BaseModal = ({ visible, onDismiss, children }: Props) => {
+  const theme = useTheme<AppTheme>();
 
   return (
     <Portal>
       <Modal
         visible={visible}
         onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.container,
-          { backgroundColor: theme.colors.surface },
-        ]}
+        contentContainerStyle={{
+          margin: theme.spacing.l,
+          marginBottom: 300,
+          borderRadius: theme.borderRadius.l,
+          borderWidth: theme.borderWidth.m,
+          borderColor: theme.colors.outline,
+          backgroundColor: theme.colors.surface,
+          padding: 0,
+          overflow: "hidden",
+          shadowColor: "#000",
+          shadowOpacity: 0.2,
+        }}
       >
         {children}
       </Modal>
