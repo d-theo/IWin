@@ -1,33 +1,34 @@
-import { View } from "react-native";
-import { useTheme, Text, Chip, Icon } from "react-native-paper";
+import { Pressable, View } from "react-native";
+import { useTheme, Text, Chip, Icon, Surface } from "react-native-paper";
 import { AppTheme } from "../theme/theme";
 import { Game } from "../types/game";
 
 type Props = {
   game: Game;
+  onPress: () => void;
 };
 
-export const GameHistoryCard = ({ game }: Props) => {
+export const GameHistoryCard = ({ game, onPress }: Props) => {
   const { spacing, colors, fontSize, fontWeight } = useTheme<AppTheme>();
   const winner = game.players.reduce(
     (acc, val) => (val.scores > acc.scores ? val : acc),
     game.players[0],
   );
+
   return (
-    <View
+    <Pressable
+      onPress={onPress}
       style={{
-        flexDirection: "row",
-        gap: spacing.xs,
+        gap: spacing.m,
+        flexDirection: "column",
         alignItems: "center",
-        position: "relative",
       }}
     >
       <View>
         <Text
           style={{
-            marginLeft: spacing.m,
             fontWeight: fontWeight.bold,
-            fontSize: fontSize.l,
+            fontSize: fontSize.m,
             color: colors.primary,
             marginRight: spacing.m,
           }}
@@ -67,6 +68,6 @@ export const GameHistoryCard = ({ game }: Props) => {
           </Chip>
         ))}
       </View>
-    </View>
+    </Pressable>
   );
 };

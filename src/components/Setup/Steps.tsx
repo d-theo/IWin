@@ -2,6 +2,9 @@ import { Button, Surface, TextInput, useTheme, Text } from "react-native-paper";
 import { AppTheme } from "../../theme/theme";
 import { Dimensions } from "react-native";
 import { Step } from "./constants";
+import { useTranslation } from "react-i18next";
+import { useCallback } from "react";
+import { throttle } from "lodash";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const MODAL_PADDING = 40;
@@ -27,6 +30,15 @@ export const StepItem = ({
   onEndConfig,
 }: StepItemProps) => {
   const { spacing } = useTheme<AppTheme>();
+  const { t } = useTranslation();
+
+  const handleNext = useCallback(throttle(onNext, 500), [onNext, throttle]);
+
+  const handleAddPlayer = useCallback(throttle(onAddPlayer, 500), [
+    throttle,
+    onAddPlayer,
+  ]);
+
   return (
     <Surface
       style={{
@@ -53,20 +65,20 @@ export const StepItem = ({
         elevation={0}
       >
         <Button onPress={onCancel}>
-          {currentIndex === 0 ? "Annuler" : "Retour"}
+          {currentIndex === 0 ? `${t("app.cancel")}` : `${t("app.previous")}`}
         </Button>
         {currentIndex === 0 && (
-          <Button mode="contained" onPress={onNext}>
-            Suivant
+          <Button mode="contained" onPress={handleNext}>
+            {t("app.next")}
           </Button>
         )}
         {currentIndex > 0 && (
           <>
-            <Button mode="contained" onPress={onAddPlayer}>
-              Ajouter
+            <Button mode="contained" onPress={handleAddPlayer}>
+              {t("app.add")}
             </Button>
             <Button mode="contained" onPress={onEndConfig}>
-              Terminer
+              {t("app.finish")}
             </Button>
           </>
         )}

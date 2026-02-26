@@ -73,8 +73,8 @@ export const SetupModal = ({ visible, onDismiss }: Props) => {
     const playerNames = [...gameObj.playerNames, text].filter(
       (name) => name !== "",
     );
-    createGame(gameObj.name, playerNames);
-    navigation.replace("Game");
+    const game = createGame(gameObj.name, playerNames);
+    navigation.replace("Game", { readonly: false, game });
   };
 
   return (

@@ -8,9 +8,9 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon-trophy.png",
+      "image": "./assets/icon-trophy.png",
       "resizeMode": "contain",
-      "backgroundColor": "#FFF7E6"
+      "backgroundColor": "#FFF9E1"
     },
     "ios": {
       "supportsTablet": true
@@ -18,8 +18,8 @@
     "android": {
       "package": "com.dtheo.iwin",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/icon-trophy.png",
+        "backgroundColor": "#FFF9E1"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
@@ -31,6 +31,9 @@
       "eas": {
         "projectId": "775bdd36-eac7-4475-81bd-10e8c95b7cc1"
       }
-    }
+    },
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }

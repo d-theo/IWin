@@ -1,0 +1,24 @@
+{
+    "app": {
+        "gameName": "Quel est le nom du jeu ?",
+        "playerName": "Nom du joueur",
+        "cancel": "Annuler",
+        "previous": "Retour",
+        "add": "Ajouter",
+        "finish": "Terminer",
+        "next": "Suivant",
+        "pointCountRecap": "Comptage des points",
+        "modifyScore": "Modifier le score",
+        "allGame": "Toutes vos parties",
+        "save": "Sauvegarder",
+        "endGame": "Terminer la partie",
+        "startGame": "Démarrer",
+        "seePreviousGame": "Voir vos parties précédentes"
+    },
+    "nav": {
+        "overview": "Recapitulatif",
+        "counting": "Comptage des points",
+        "modifyScore":"Modifier le score",
+        "allGames": "Mes parties"
+    }
+}

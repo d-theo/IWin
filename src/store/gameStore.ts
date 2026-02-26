@@ -6,12 +6,15 @@ import { Game } from "../types/game";
 
 type GameStore = {
   game: Game | null;
-  createGame: (name: string, players: string[]) => void;
+  createGame: (name: string, players: string[]) => Game;
   addScore: (playerId: string, value: number) => void;
   endGame: () => void;
   deleteScore: (playerId: string, scoreId: string) => void;
   updateScore: (playerId: string, scoreId: string, value: number) => void;
+  loadGame: (game: Game) => void;
   gamesHistory: Game[];
+  // debug
+  clear: () => void;
 };
 
 export const useGameStore = create(
@@ -19,7 +22,9 @@ export const useGameStore = create(
     (set, get) => ({
       game: null,
       gamesHistory: [],
-
+      loadGame: (game) => {
+        set({ game });
+      },
       createGame: (name, playerNames) => {
         const game: Game = {
           id: uuid.v4(),
@@ -32,6 +37,7 @@ export const useGameStore = create(
           })),
         };
         set({ game });
+        return game;
       },
 
       addScore: (playerId, value) => {
@@ -60,7 +66,10 @@ export const useGameStore = create(
         const { game, gamesHistory } = get();
         if (!game) return;
 
-        const updatedHistory = [game, ...gamesHistory];
+        const updatedHistory = [
+          game,
+          ...gamesHistory.filter((history) => history.id !== game.id),
+        ];
 
         set({
           game: null,
@@ -106,6 +115,9 @@ export const useGameStore = create(
         };
 
         set({ game: updated });
+      },
+      clear: () => {
+        set({ game: null, gamesHistory: [] });
       },
     }),
     {

@@ -1,0 +1,24 @@
+{
+    "app": {
+        "gameName": "What is the name of the game ?",
+        "playerName": "Player name",
+        "cancel": "Cancel",
+        "previous": "Back",
+        "add": "Add",
+        "finish": "Finish",
+        "next": "Next",
+        "pointCountRecap": "Points",
+        "modifyScore": "Modify Score",
+        "allGame": "All past games",
+        "save": "Save",
+        "endGame": "End the game",
+        "startGame": "Start a game",
+        "seePreviousGame": "See you previous games"
+    },
+    "nav": {
+        "overview": "Overview",
+        "counting": "Score count",
+        "modifyScore":"Edit Score",
+        "allGames": "Game history"
+    }
+}

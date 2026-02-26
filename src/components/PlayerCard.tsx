@@ -15,9 +15,16 @@ type Props = {
   score: number;
   onAdd: () => void;
   onHistory: () => void;
+  readonly: boolean;
 };
 
-export default function PlayerCard({ name, score, onAdd, onHistory }: Props) {
+export default function PlayerCard({
+  name,
+  score,
+  onAdd,
+  onHistory,
+  readonly,
+}: Props) {
   const theme = useTheme<AppTheme>();
   const scale = useSharedValue(1);
 
@@ -34,6 +41,10 @@ export default function PlayerCard({ name, score, onAdd, onHistory }: Props) {
     transform: [{ scale: scale.value }],
   }));
 
+  const handlePress = () => {
+    if (!readonly) onHistory();
+  };
+
   return (
     <Surface
       style={{
@@ -48,7 +59,7 @@ export default function PlayerCard({ name, score, onAdd, onHistory }: Props) {
       elevation={2}
     >
       <Pressable
-        onPress={onHistory}
+        onPress={handlePress}
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -61,14 +72,21 @@ export default function PlayerCard({ name, score, onAdd, onHistory }: Props) {
             style={{
               fontWeight: theme.fontWeight.black,
               textTransform: "uppercase",
-              fontSize: theme.fontSize.m,
+              fontSize: 20,
             }}
           >
             {name}
           </Text>
         </Surface>
 
-        <Surface style={{ flex: 1, alignItems: "flex-end" }} elevation={0}>
+        <Surface
+          style={{
+            alignItems: "flex-end",
+            marginLeft: theme.spacing.m,
+            marginRight: theme.spacing.m,
+          }}
+          elevation={0}
+        >
           <Animated.Text
             style={[
               {
@@ -83,15 +101,17 @@ export default function PlayerCard({ name, score, onAdd, onHistory }: Props) {
           </Animated.Text>
         </Surface>
 
-        <Surface style={{ flex: 1, alignItems: "flex-end" }} elevation={0}>
-          <IconButton
-            icon="plus"
-            variant="tertiary"
-            size="l"
-            onPress={onAdd}
-            style={{ margin: 0, borderRadius: theme.borderRadius.s }}
-          />
-        </Surface>
+        {!readonly && (
+          <Surface style={{ alignItems: "flex-end" }} elevation={0}>
+            <IconButton
+              icon="plus"
+              variant="tertiary"
+              size="l"
+              onPress={onAdd}
+              style={{ margin: 0, borderRadius: theme.borderRadius.s }}
+            />
+          </Surface>
+        )}
       </Pressable>
     </Surface>
   );

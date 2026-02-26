@@ -1,11 +1,16 @@
+import { Game } from "../types/game";
+
 export type RootStackParamList = {
   Setup: {
     shouldSetup: boolean | undefined;
   };
 
-  Game: undefined;
+  Game: {
+    readonly: boolean;
+    game: Game;
+  };
 
-  GamesHistory: undefined
+  GamesHistory: undefined;
 
   History: {
     playerId: string;

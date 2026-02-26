@@ -11,6 +11,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "GamesHistory">;
 
 export default function GamesHistoryScreen({ navigation }: Props) {
   const games = useGameStore((s) => s.gamesHistory);
+  const loadGame = useGameStore((s) => s.loadGame);
   const { colors, spacing, fontSize, fontWeight } = useTheme<AppTheme>();
 
   return (
@@ -23,11 +24,13 @@ export default function GamesHistoryScreen({ navigation }: Props) {
           <>
             <Text
               style={{
-                alignSelf: "center",
+                alignSelf: "flex-end",
+                marginRight: spacing.l,
                 marginBottom: 3,
                 color: colors.onSurface,
                 fontSize: fontSize.xs,
                 fontWeight: fontWeight.black,
+                opacity: 0.5,
               }}
             >
               {formatDistanceToNow(new Date(item.createdAt))}
@@ -40,7 +43,13 @@ export default function GamesHistoryScreen({ navigation }: Props) {
               }}
             >
               <Card.Content>
-                <GameHistoryCard game={item} />
+                <GameHistoryCard
+                  onPress={() => {
+                    loadGame(item);
+                    navigation.navigate("Game", { readonly: true, game: item });
+                  }}
+                  game={item}
+                />
               </Card.Content>
             </Card>
           </>

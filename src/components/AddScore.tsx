@@ -13,9 +13,12 @@ type Props = {
 export const AddScore = ({ isOpen, onClose, onAddScore }: Props) => {
   const [score, setScore] = useState("");
   const resetModalAndAddScore = (score: number) => {
-    if (isNaN(score)) return;
-    setScore("");
-    onAddScore(score, true);
+    if (isNaN(score)) {
+      onClose();
+    } else {
+      setScore("");
+      onAddScore(score, true);
+    }
   };
   const addScore = (score: number) => {
     if (isNaN(score)) return;

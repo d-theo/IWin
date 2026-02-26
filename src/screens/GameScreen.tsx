@@ -12,8 +12,9 @@ const total = (scores: any[]) => scores.reduce((sum, s) => sum + s.value, 0);
 
 type Props = NativeStackScreenProps<RootStackParamList, "Game">;
 
-export default function GameScreen({ navigation }: Props) {
-  const game = useGameStore((s) => s.game);
+export default function GameScreen({ navigation, route }: Props) {
+  const { readonly, game } = route.params;
+
   const endGame = useGameStore((s) => s.endGame);
   const theme = useTheme<AppTheme>();
   const addScore = useGameStore((s) => s.addScore);
@@ -47,7 +48,10 @@ export default function GameScreen({ navigation }: Props) {
     navigation.replace("Setup", { shouldSetup: false });
   };
 
-  if (!game) return null;
+  if (!game) {
+    navigation.replace("Setup", { shouldSetup: false });
+    return null;
+  }
 
   return (
     <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
@@ -63,7 +67,7 @@ export default function GameScreen({ navigation }: Props) {
           padding: theme.spacing.m,
           fontWeight: theme.fontWeight.black,
           color: theme.colors.primary,
-          marginTop: theme.spacing.xl,
+          marginTop: readonly ? theme.spacing.s : theme.spacing.xl,
         }}
       >
         {game.name}
@@ -79,12 +83,15 @@ export default function GameScreen({ navigation }: Props) {
               navigation.navigate("History", { playerId: item.id })
             }
             score={total(item.scores)}
+            readonly={readonly}
           />
         )}
       />
-      <Button mode="contained" style={{ margin: 40 }} onPress={handleEndGame}>
-        Finish game
-      </Button>
+      {!readonly && (
+        <Button mode="contained" style={{ margin: 40 }} onPress={handleEndGame}>
+          Finish game
+        </Button>
+      )}
     </View>
   );
 }
