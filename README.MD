@@ -8,9 +8,9 @@ A mobile score tracking app for board games, card games, or any multiplayer game
 
 ## 📸 Screenshots
 
-![Alt Text](https://github.com/d-theo/IWin/blob/master/assets/p1.jpg)
-![Alt Text](https://github.com/d-theo/IWin/blob/master/assets/p2.jpg)
-![Alt Text](https://github.com/d-theo/IWin/blob/master/assets/p3.jpg)
+![Alt Text](https://github.com/d-theo/IWin/blob/main/assets/p1.jpg)
+![Alt Text](https://github.com/d-theo/IWin/blob/main/assets/p2.jpg)
+![Alt Text](https://github.com/d-theo/IWin/blob/main/assets/p3.jpg)
 
 ---
 
