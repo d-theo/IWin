@@ -6,9 +6,9 @@ import { RootStackParamList } from "../navigation/types";
 import { AppTheme } from "../theme/theme";
 import { ScoreHistoryCard } from "../components/ScoreHistoryCard";
 
-type Props = NativeStackScreenProps<RootStackParamList, "History">;
+type Props = NativeStackScreenProps<RootStackParamList, "ScoresHistory">;
 
-export default function HistoryScreen({ route, navigation }: Props) {
+export default function ScoresHistoryScreen({ route, navigation }: Props) {
   const { playerId } = route.params;
   const game = useGameStore((s) => s.game);
   const deleteScore = useGameStore((s) => s.deleteScore);

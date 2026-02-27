@@ -24,6 +24,11 @@ export default function SetupScreen({ route, navigation }: Props) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const createGame = useGameStore((s) => s.createGame);
+  const game = useGameStore((s) => s.game);
+
+  if (game) {
+    navigation.replace("Game", { readonly: false, gameId: game.id });
+  }
 
   const handleCreateGame = (gameName: string, playerNames: string[]) => {
     const game = createGame(gameName, playerNames);

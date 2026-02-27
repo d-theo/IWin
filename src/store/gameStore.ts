@@ -11,20 +11,19 @@ type GameStore = {
   endGame: () => void;
   deleteScore: (playerId: string, scoreId: string) => void;
   updateScore: (playerId: string, scoreId: string, value: number) => void;
-  loadGame: (game: Game) => void;
   gamesHistory: Game[];
+  checkSessionExpiry: () => void;
   // debug
   clear: () => void;
 };
+
+const SESSION_EXPIRY_MS = 1 * 60 * 60 * 1000; // 1 heures
 
 export const useGameStore = create(
   persist<GameStore>(
     (set, get) => ({
       game: null,
       gamesHistory: [],
-      loadGame: (game) => {
-        set({ game });
-      },
       createGame: (name, playerNames) => {
         const game: Game = {
           id: uuid.v4(),
@@ -76,7 +75,7 @@ export const useGameStore = create(
         });
       },
 
-      deleteScore: async (playerId, scoreId) => {
+      deleteScore: (playerId, scoreId) => {
         const game = get().game;
         if (!game) return;
 
@@ -115,6 +114,12 @@ export const useGameStore = create(
 
         set({ game: updated });
       },
+      checkSessionExpiry: () => {
+        const { game, endGame } = get();
+        if (game && Date.now() - game.createdAt > SESSION_EXPIRY_MS) {
+          endGame();
+        }
+      },
       clear: () => {
         set({ game: null, gamesHistory: [] });
       },
@@ -126,6 +131,9 @@ export const useGameStore = create(
         game: state.game,
         gamesHistory: state.gamesHistory,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state) state.checkSessionExpiry();
+      },
     },
   ),
 );

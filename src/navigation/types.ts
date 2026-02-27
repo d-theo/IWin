@@ -1,5 +1,3 @@
-import { Game } from "../types/game";
-
 export type RootStackParamList = {
   Setup: {
     shouldSetupNewGame: boolean | undefined;
@@ -12,7 +10,7 @@ export type RootStackParamList = {
 
   GamesHistory: undefined;
 
-  History: {
+  ScoresHistory: {
     playerId: string;
   };
 

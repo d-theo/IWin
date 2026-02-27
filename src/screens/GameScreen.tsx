@@ -97,7 +97,7 @@ export default function GameScreen({ navigation, route }: Props) {
             name={item.name}
             onAdd={() => handleOpenScoreAdder(item.id)}
             onHistory={() =>
-              navigation.navigate("History", { playerId: item.id })
+              navigation.navigate("ScoresHistory", { playerId: item.id })
             }
             score={total(item.scores)}
             readonly={readonly}

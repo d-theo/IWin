@@ -4,8 +4,12 @@ import { Button, TextInput, useTheme } from "react-native-paper";
 import { useGameStore } from "../store/gameStore";
 import { AppTheme } from "../theme/theme";
 import { useTranslation } from "react-i18next";
+import { RootStackParamList } from "../navigation/types";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export default function EditScoreModal({ route, navigation }: any) {
+type Props = NativeStackScreenProps<RootStackParamList, "EditScore">;
+
+export default function EditScoreModal({ route, navigation }: Props) {
   const { playerId, scoreId } = route.params;
   const { colors, spacing } = useTheme<AppTheme>();
   const { t } = useTranslation();

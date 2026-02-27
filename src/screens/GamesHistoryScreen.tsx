@@ -6,13 +6,14 @@ import { RootStackParamList } from "../navigation/types";
 import { AppTheme } from "../theme/theme";
 import { GameHistoryCard } from "../components/GameHistoryCard";
 import { formatDistanceToNow } from "date-fns";
+import { usePhoneLocale } from "../hooks/useLocale";
 
 type Props = NativeStackScreenProps<RootStackParamList, "GamesHistory">;
 
 export default function GamesHistoryScreen({ navigation }: Props) {
   const games = useGameStore((s) => s.gamesHistory);
-  const loadGame = useGameStore((s) => s.loadGame);
   const { colors, spacing, fontSize, fontWeight } = useTheme<AppTheme>();
+  const { localeDate } = usePhoneLocale();
 
   return (
     <View style={{ backgroundColor: colors.background, flex: 1 }}>
@@ -33,7 +34,9 @@ export default function GamesHistoryScreen({ navigation }: Props) {
                 opacity: 0.5,
               }}
             >
-              {formatDistanceToNow(new Date(item.createdAt))}
+              {formatDistanceToNow(new Date(item.createdAt), {
+                locale: localeDate,
+              })}
             </Text>
             <Card
               style={{
@@ -45,7 +48,6 @@ export default function GamesHistoryScreen({ navigation }: Props) {
               <Card.Content>
                 <GameHistoryCard
                   onPress={() => {
-                    loadGame(item);
                     navigation.navigate("Game", {
                       readonly: true,
                       gameId: item.id,

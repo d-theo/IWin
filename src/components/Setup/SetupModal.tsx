@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { FlatList, Animated } from "react-native";
 import BaseModal from "../BaseModal";
 import { StepItem } from "./Steps";
@@ -14,20 +14,26 @@ type Props = {
 export const SetupModal = ({ visible, onDismiss, onGameCreate }: Props) => {
   const { t } = useTranslation();
   const flatListRef = useRef<any>(null);
-  const STEPS: Step[] = [
-    { id: "1", question: t("app.gameName") },
-    { id: "2", question: t("app.playerName") },
-    { id: "3", question: t("app.playerName") },
-    { id: "4", question: t("app.playerName") },
-    { id: "5", question: t("app.playerName") },
-    { id: "6", question: t("app.playerName") },
-    { id: "7", question: t("app.playerName") },
-    { id: "8", question: t("app.playerName") },
-  ];
-  const [newGame, setNewGame] = useState({
+  const STEPS: Step[] = useMemo(
+    () => [
+      { id: "1", question: t("app.gameName") },
+      { id: "2", question: t("app.playerName") },
+      { id: "3", question: t("app.playerName") },
+      { id: "4", question: t("app.playerName") },
+      { id: "5", question: t("app.playerName") },
+      { id: "6", question: t("app.playerName") },
+      { id: "7", question: t("app.playerName") },
+      { id: "8", question: t("app.playerName") },
+    ],
+    [],
+  );
+
+  const freshGame = {
     name: "",
     playerNames: ["", "", "", "", "", "", "", ""],
-  });
+  };
+
+  const [newGame, setNewGame] = useState(freshGame);
   const [text, setText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -46,6 +52,13 @@ export const SetupModal = ({ visible, onDismiss, onGameCreate }: Props) => {
     }
   }, [visible]);
 
+  const handleDismissModal = () => {
+    setText("");
+    setNewGame(freshGame);
+    setCurrentIndex(0);
+    onDismiss();
+  };
+
   const goToNext = () => {
     if (currentIndex < STEPS.length - 1) {
       flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
@@ -59,7 +72,7 @@ export const SetupModal = ({ visible, onDismiss, onGameCreate }: Props) => {
   };
 
   const handleCancel = () => {
-    if (currentIndex === 0) onDismiss();
+    if (currentIndex === 0) handleDismissModal();
     else goToPrev();
   };
 
@@ -86,7 +99,7 @@ export const SetupModal = ({ visible, onDismiss, onGameCreate }: Props) => {
   };
 
   return (
-    <BaseModal visible={visible} onDismiss={onDismiss} title="">
+    <BaseModal visible={visible} onDismiss={handleDismissModal}>
       <Animated.View
         style={{
           transform: [{ scale: bounceValue }],

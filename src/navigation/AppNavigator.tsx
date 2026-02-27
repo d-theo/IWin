@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SetupScreen from "../screens/SetupScreen";
 import GameScreen from "../screens/GameScreen";
-import HistoryScreen from "../screens/HistoryScreen";
+import ScoresHistoryScreen from "../screens/ScoresHistoryScreen";
 import EditScoreModal from "../screens/EditScoreModal";
 import { RootStackParamList } from "./types";
 import GamesHistoryScreen from "../screens/GamesHistoryScreen";
@@ -32,8 +32,8 @@ export default function AppNavigator() {
         })}
       />
       <Stack.Screen
-        name="History"
-        component={HistoryScreen}
+        name="ScoresHistory"
+        component={ScoresHistoryScreen}
         options={{ title: t("nav.counting") }}
       />
       <Stack.Screen

@@ -5,7 +5,6 @@ import { AppTheme } from "../theme/theme";
 type Props = {
   visible: boolean;
   onDismiss: () => void;
-  title: string;
   children: ReactNode | ReactNode[];
 };
 

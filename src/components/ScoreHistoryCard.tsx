@@ -2,7 +2,7 @@ import { IconButton } from "./atoms/IconButton";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { AppTheme } from "../theme/theme";
-import { Game, ScoreEntry } from "../types/game";
+import { ScoreEntry } from "../types/game";
 
 type Props = {
   score: ScoreEntry;

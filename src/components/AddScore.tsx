@@ -30,7 +30,7 @@ export const AddScore = ({ isOpen, onClose, onAddScore }: Props) => {
     onAddScore(score, { shouldCloseModal: false });
   };
   return (
-    <BaseModal visible={isOpen} onDismiss={onClose} title="">
+    <BaseModal visible={isOpen} onDismiss={onClose}>
       <TextInput
         keyboardType="decimal-pad"
         label="Score"
