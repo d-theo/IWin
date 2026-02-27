@@ -46,7 +46,10 @@ export default function GamesHistoryScreen({ navigation }: Props) {
                 <GameHistoryCard
                   onPress={() => {
                     loadGame(item);
-                    navigation.navigate("Game", { readonly: true, game: item });
+                    navigation.navigate("Game", {
+                      readonly: true,
+                      gameId: item.id,
+                    });
                   }}
                   game={item}
                 />

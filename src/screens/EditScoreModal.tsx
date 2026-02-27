@@ -3,10 +3,12 @@ import { View } from "react-native";
 import { Button, TextInput, useTheme } from "react-native-paper";
 import { useGameStore } from "../store/gameStore";
 import { AppTheme } from "../theme/theme";
+import { useTranslation } from "react-i18next";
 
 export default function EditScoreModal({ route, navigation }: any) {
   const { playerId, scoreId } = route.params;
   const { colors, spacing } = useTheme<AppTheme>();
+  const { t } = useTranslation();
 
   const game = useGameStore((s) => s.game);
   const updateScore = useGameStore((s) => s.updateScore);
@@ -37,7 +39,7 @@ export default function EditScoreModal({ route, navigation }: any) {
       />
 
       <Button mode="contained" onPress={save}>
-        Sauvegarder
+        {t("app.save")}
       </Button>
     </View>
   );

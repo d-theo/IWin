@@ -4,26 +4,30 @@ import { TextInput } from "react-native-paper";
 import BaseModal from "./BaseModal";
 import { IconButton } from "./atoms/IconButton";
 
+export type AddScoreOption = {
+  shouldCloseModal: boolean;
+};
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  onAddScore: (score: number, shouldClose: boolean) => void;
+  onAddScore: (score: number, { shouldCloseModal }: AddScoreOption) => void;
 };
 
 export const AddScore = ({ isOpen, onClose, onAddScore }: Props) => {
   const [score, setScore] = useState("");
-  const resetModalAndAddScore = (score: number) => {
+  const closeModalAndAddScore = (score: number) => {
     if (isNaN(score)) {
       onClose();
     } else {
       setScore("");
-      onAddScore(score, true);
+      onAddScore(score, { shouldCloseModal: true });
     }
   };
   const addScore = (score: number) => {
     if (isNaN(score)) return;
     setScore("");
-    onAddScore(score, false);
+    onAddScore(score, { shouldCloseModal: false });
   };
   return (
     <BaseModal visible={isOpen} onDismiss={onClose} title="">
@@ -49,7 +53,7 @@ export const AddScore = ({ isOpen, onClose, onAddScore }: Props) => {
         <IconButton
           icon="check"
           variant="tertiary"
-          onPress={() => resetModalAndAddScore(Number.parseInt(score, 10))}
+          onPress={() => closeModalAndAddScore(Number.parseInt(score, 10))}
         />
       </View>
     </BaseModal>

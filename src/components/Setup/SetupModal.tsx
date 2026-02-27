@@ -1,20 +1,30 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FlatList, Animated } from "react-native";
-import { useGameStore } from "../../store/gameStore";
-import { useNavigation } from "@react-navigation/native";
 import BaseModal from "../BaseModal";
 import { StepItem } from "./Steps";
-import { STEPS } from "./constants";
+import { Step } from "./types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   visible: boolean;
   onDismiss: () => void;
+  onGameCreate: (gameName: string, playerNames: string[]) => void;
 };
 
-export const SetupModal = ({ visible, onDismiss }: Props) => {
+export const SetupModal = ({ visible, onDismiss, onGameCreate }: Props) => {
+  const { t } = useTranslation();
   const flatListRef = useRef<any>(null);
-  const navigation = useNavigation<any>();
-  const [gameObj, setGameObj] = useState({
+  const STEPS: Step[] = [
+    { id: "1", question: t("app.gameName") },
+    { id: "2", question: t("app.playerName") },
+    { id: "3", question: t("app.playerName") },
+    { id: "4", question: t("app.playerName") },
+    { id: "5", question: t("app.playerName") },
+    { id: "6", question: t("app.playerName") },
+    { id: "7", question: t("app.playerName") },
+    { id: "8", question: t("app.playerName") },
+  ];
+  const [newGame, setNewGame] = useState({
     name: "",
     playerNames: ["", "", "", "", "", "", "", ""],
   });
@@ -36,8 +46,6 @@ export const SetupModal = ({ visible, onDismiss }: Props) => {
     }
   }, [visible]);
 
-  const createGame = useGameStore((s) => s.createGame);
-
   const goToNext = () => {
     if (currentIndex < STEPS.length - 1) {
       flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
@@ -56,25 +64,25 @@ export const SetupModal = ({ visible, onDismiss }: Props) => {
   };
 
   const handleAddGameName = () => {
-    setGameObj((prev) => ({ ...prev, name: text }));
+    setNewGame((prev) => ({ ...prev, name: text }));
     goToNext();
   };
 
   const handleAddPlayer = () => {
-    setGameObj((prev) => {
+    setNewGame((prev) => {
       const playerNames = [...prev.playerNames];
       playerNames[currentIndex - 1] = text;
+      setText("");
       return { ...prev, playerNames };
     });
     goToNext();
   };
 
   const handleEndConfig = () => {
-    const playerNames = [...gameObj.playerNames, text].filter(
+    const playerNames = [...newGame.playerNames, text].filter(
       (name) => name !== "",
     );
-    const game = createGame(gameObj.name, playerNames);
-    navigation.replace("Game", { readonly: false, game });
+    onGameCreate(newGame.name, playerNames);
   };
 
   return (

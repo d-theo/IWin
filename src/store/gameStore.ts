@@ -39,7 +39,6 @@ export const useGameStore = create(
         set({ game });
         return game;
       },
-
       addScore: (playerId, value) => {
         const game = get().game;
         if (!game) return;

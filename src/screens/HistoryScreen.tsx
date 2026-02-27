@@ -13,8 +13,8 @@ export default function HistoryScreen({ route, navigation }: Props) {
   const game = useGameStore((s) => s.game);
   const deleteScore = useGameStore((s) => s.deleteScore);
   const { colors, spacing, borderWidth } = useTheme<AppTheme>();
-
   const player = game?.players.find((p) => p.id === playerId);
+
   if (!player) return null;
 
   return (

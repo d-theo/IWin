@@ -1,23 +1,37 @@
 import { FlatList, View } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
 import { useGameStore } from "../store/gameStore";
-import { AddScore } from "../components/AddScore";
+import { AddScore, AddScoreOption } from "../components/AddScore";
 import { useState } from "react";
 import PlayerCard from "../components/PlayerCard";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/types";
 import { AppTheme } from "../theme/theme";
+import { useTranslation } from "react-i18next";
 
 const total = (scores: any[]) => scores.reduce((sum, s) => sum + s.value, 0);
 
 type Props = NativeStackScreenProps<RootStackParamList, "Game">;
+export type Step = {
+  id: string;
+  question: string;
+};
 
 export default function GameScreen({ navigation, route }: Props) {
-  const { readonly, game } = route.params;
-
-  const endGame = useGameStore((s) => s.endGame);
+  const { readonly, gameId } = route.params;
   const theme = useTheme<AppTheme>();
+  const { t } = useTranslation();
+
+  const game = useGameStore((s) => {
+    const game = s.game;
+    if (game?.id === gameId) return game;
+    const pastGame = s.gamesHistory.find((history) => history.id === gameId);
+    if (pastGame) return pastGame;
+    return null;
+  });
+  const endGame = useGameStore((s) => s.endGame);
   const addScore = useGameStore((s) => s.addScore);
+
   const [scoreAdder, setScoreAdder] = useState({
     adding: false,
     currentPlayerId: "",
@@ -37,19 +51,22 @@ export default function GameScreen({ navigation, route }: Props) {
     });
   };
 
-  const handleAddScore = (score: number, shouldClose: boolean) => {
+  const handleAddScore = (
+    score: number,
+    { shouldCloseModal }: AddScoreOption,
+  ) => {
     const currentPlayerId = scoreAdder.currentPlayerId;
     addScore(currentPlayerId, score);
-    if (shouldClose) handleCloseScoreAdder();
+    if (shouldCloseModal) handleCloseScoreAdder();
   };
 
   const handleEndGame = () => {
     endGame();
-    navigation.replace("Setup", { shouldSetup: false });
+    navigation.replace("Setup", { shouldSetupNewGame: false });
   };
 
   if (!game) {
-    navigation.replace("Setup", { shouldSetup: false });
+    navigation.replace("Setup", { shouldSetupNewGame: false });
     return null;
   }
 
@@ -89,7 +106,7 @@ export default function GameScreen({ navigation, route }: Props) {
       />
       {!readonly && (
         <Button mode="contained" style={{ margin: 40 }} onPress={handleEndGame}>
-          Finish game
+          {t("app.endGame")}
         </Button>
       )}
     </View>

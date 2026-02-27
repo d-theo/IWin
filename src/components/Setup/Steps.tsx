@@ -1,7 +1,7 @@
 import { Button, Surface, TextInput, useTheme, Text } from "react-native-paper";
 import { AppTheme } from "../../theme/theme";
 import { Dimensions } from "react-native";
-import { Step } from "./constants";
+import { Step } from "./types";
 import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
 import { throttle } from "lodash";
@@ -31,9 +31,7 @@ export const StepItem = ({
 }: StepItemProps) => {
   const { spacing } = useTheme<AppTheme>();
   const { t } = useTranslation();
-
   const handleNext = useCallback(throttle(onNext, 500), [onNext, throttle]);
-
   const handleAddPlayer = useCallback(throttle(onAddPlayer, 500), [
     throttle,
     onAddPlayer,
