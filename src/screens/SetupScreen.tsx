@@ -36,21 +36,10 @@ export default function SetupScreen({ route, navigation }: Props) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <SetupModal
-        onGameCreate={handleCreateGame}
-        onDismiss={() => setVisible(false)}
-        visible={visible}
-      />
-      <Button mode="contained" onPress={() => setVisible(true)}>
-        {t("app.startGame")}
-      </Button>
-      <Button
-        mode="outlined"
-        onPress={() => navigation.navigate("GamesHistory")}
-      >
-        {t("app.seePreviousGame")}
-      </Button>
-    </View>
+    <SetupModal
+      onGameCreate={handleCreateGame}
+      onDismiss={() => setVisible(false)}
+      visible={visible}
+    />
   );
 }

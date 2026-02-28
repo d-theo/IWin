@@ -99,34 +99,27 @@ export const SetupModal = ({ visible, onDismiss, onGameCreate }: Props) => {
   };
 
   return (
-    <BaseModal visible={visible} onDismiss={handleDismissModal}>
-      <Animated.View
-        style={{
-          transform: [{ scale: bounceValue }],
-          opacity: bounceValue,
-        }}
-      >
-        <FlatList
-          ref={flatListRef}
-          data={STEPS}
-          renderItem={({ item }) => (
-            <StepItem
-              item={item}
-              currentIndex={currentIndex}
-              onChangeText={setText}
-              onCancel={handleCancel}
-              onNext={handleAddGameName}
-              onAddPlayer={handleAddPlayer}
-              onEndConfig={handleEndConfig}
-            />
-          )}
-          horizontal
-          pagingEnabled
-          scrollEnabled={false}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-        />
-      </Animated.View>
-    </BaseModal>
+    <Animated.View style={{ flex: 1 }}>
+      <FlatList
+        ref={flatListRef}
+        data={STEPS}
+        renderItem={({ item }) => (
+          <StepItem
+            item={item}
+            currentIndex={currentIndex}
+            onChangeText={setText}
+            onCancel={handleCancel}
+            onNext={handleAddGameName}
+            onAddPlayer={handleAddPlayer}
+            onEndConfig={handleEndConfig}
+          />
+        )}
+        horizontal
+        pagingEnabled
+        scrollEnabled={false}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+      />
+    </Animated.View>
   );
 };

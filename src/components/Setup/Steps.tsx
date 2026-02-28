@@ -40,46 +40,59 @@ export const StepItem = ({
   return (
     <Surface
       style={{
-        width: ITEM_WIDTH,
-        flexDirection: "column",
-        padding: spacing.m,
+        flex: 1,
+        width: SCREEN_WIDTH,
       }}
       elevation={0}
     >
-      <Text variant="headlineSmall">{item.question}</Text>
-      <TextInput
-        autoFocus={currentIndex === 0}
-        mode="outlined"
-        label=""
-        style={{ marginTop: spacing.s }}
-        onChangeText={onChangeText}
-      />
       <Surface
         style={{
-          justifyContent: "space-between",
-          flexDirection: "row",
-          paddingTop: spacing.s,
+          backgroundColor: "white",
+          marginTop: 100,
+          height: 250,
         }}
-        elevation={0}
+        elevation={5}
       >
-        <Button onPress={onCancel}>
-          {currentIndex === 0 ? `${t("app.cancel")}` : `${t("app.previous")}`}
-        </Button>
-        {currentIndex === 0 && (
-          <Button mode="contained" onPress={handleNext}>
-            {t("app.next")}
+        <Text
+          style={{ textAlignVertical: "center", textAlign: "center" }}
+          variant="headlineSmall"
+        >
+          {item.question}
+        </Text>
+        <TextInput
+          autoFocus={currentIndex === 0}
+          mode="outlined"
+          label=""
+          style={{ marginTop: spacing.s }}
+          onChangeText={onChangeText}
+        />
+        <Surface
+          style={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+            paddingTop: spacing.s,
+          }}
+          elevation={0}
+        >
+          <Button onPress={onCancel}>
+            {currentIndex === 0 ? `${t("app.cancel")}` : `${t("app.previous")}`}
           </Button>
-        )}
-        {currentIndex > 0 && (
-          <>
-            <Button mode="contained" onPress={handleAddPlayer}>
-              {t("app.add")}
+          {currentIndex === 0 && (
+            <Button mode="contained" onPress={handleNext}>
+              {t("app.next")}
             </Button>
-            <Button mode="contained" onPress={onEndConfig}>
-              {t("app.finish")}
-            </Button>
-          </>
-        )}
+          )}
+          {currentIndex > 0 && (
+            <>
+              <Button mode="contained" onPress={handleAddPlayer}>
+                {t("app.add")}
+              </Button>
+              <Button mode="contained" onPress={onEndConfig}>
+                {t("app.finish")}
+              </Button>
+            </>
+          )}
+        </Surface>
       </Surface>
     </Surface>
   );
