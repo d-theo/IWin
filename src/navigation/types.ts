@@ -1,7 +1,9 @@
 export type RootStackParamList = {
-  Setup: {
+  Home: {
     shouldSetupNewGame: boolean | undefined;
   };
+
+  Setup: undefined;
 
   Game: {
     readonly: boolean;

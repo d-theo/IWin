@@ -62,11 +62,11 @@ export default function GameScreen({ navigation, route }: Props) {
 
   const handleEndGame = () => {
     endGame();
-    navigation.replace("Setup", { shouldSetupNewGame: false });
+    navigation.replace("Home", { shouldSetupNewGame: false });
   };
 
   if (!game) {
-    navigation.replace("Setup", { shouldSetupNewGame: false });
+    navigation.replace("Home", { shouldSetupNewGame: false });
     return null;
   }
 

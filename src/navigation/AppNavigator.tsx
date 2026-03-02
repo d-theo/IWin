@@ -1,11 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SetupScreen from "../screens/SetupScreen";
+import HomeScreen from "../screens/HomeScreen";
 import GameScreen from "../screens/GameScreen";
 import ScoresHistoryScreen from "../screens/ScoresHistoryScreen";
 import EditScoreModal from "../screens/EditScoreModal";
 import { RootStackParamList } from "./types";
 import GamesHistoryScreen from "../screens/GamesHistoryScreen";
 import { useTranslation } from "react-i18next";
+import { SetupScreen } from "../screens/SetupScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -18,6 +19,11 @@ export default function AppNavigator() {
         headerTitleStyle: { fontWeight: "bold" },
       }}
     >
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Setup"
         component={SetupScreen}
