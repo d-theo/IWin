@@ -1,6 +1,6 @@
 {
     "app": {
-        "gameName": "What is the name of the game ?",
+        "gameName": "Name of the game",
         "playerName": "Player name",
         "cancel": "Cancel",
         "previous": "Back",

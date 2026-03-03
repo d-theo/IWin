@@ -3,8 +3,6 @@ import { AppTheme } from "../../theme/theme";
 import { Dimensions, View } from "react-native";
 import { Step } from "./types";
 import { useTranslation } from "react-i18next";
-import { useCallback } from "react";
-import { throttle } from "lodash";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -29,11 +27,6 @@ export const StepItem = ({
 }: StepItemProps) => {
   const { spacing, colors, borderRadius, borderWidth } = useTheme<AppTheme>();
   const { t } = useTranslation();
-  const handleNext = useCallback(throttle(onNext, 500), [onNext, throttle]);
-  const handleAddPlayer = useCallback(throttle(onAddPlayer, 500), [
-    throttle,
-    onAddPlayer,
-  ]);
 
   return (
     <View
@@ -95,13 +88,13 @@ export const StepItem = ({
             {currentIndex === 0 ? `${t("app.cancel")}` : `${t("app.previous")}`}
           </Button>
           {currentIndex === 0 && (
-            <Button mode="contained" onPress={handleNext}>
+            <Button mode="contained" onPress={onNext}>
               {t("app.next")}
             </Button>
           )}
           {currentIndex > 0 && (
             <>
-              <Button mode="contained" onPress={handleAddPlayer}>
+              <Button mode="contained" onPress={onAddPlayer}>
                 {t("app.add")}
               </Button>
               <Button mode="contained" onPress={onEndConfig}>

@@ -1,39 +1,30 @@
 import React, { useMemo, useRef, useState } from "react";
-import { Dimensions, FlatList, StyleSheet, View } from "react-native";
-import { Surface, useTheme } from "react-native-paper";
+import { FlatList, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/types";
 import { useTranslation } from "react-i18next";
 import { useGameStore } from "../store/gameStore";
 import { StepItem } from "../components/Setup/Steps";
 import { Step } from "./GameScreen";
-import { AppTheme } from "../theme/theme";
+import { Dice } from "../components/Dice/Dice";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Setup">;
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 export function SetupScreen({ route, navigation }: Props) {
   const { t } = useTranslation();
-  const theme = useTheme<AppTheme>();
   const createGame = useGameStore((s) => s.createGame);
 
   const flatListRef = useRef<any>(null);
   const STEPS: Step[] = useMemo(
-    () => [
-      { id: "1", question: t("app.gameName") },
-      { id: "2", question: t("app.playerName") },
-      { id: "3", question: t("app.playerName") },
-      { id: "4", question: t("app.playerName") },
-      { id: "5", question: t("app.playerName") },
-      { id: "6", question: t("app.playerName") },
-      { id: "7", question: t("app.playerName") },
-      { id: "8", question: t("app.playerName") },
-    ],
-    [],
-  );
+    () => [{ id: "1", question: t("app.gameName") }].concat(
+      [2,3,4,5,6,7,8,9,10,11,12,13].map((i) => ({
+        id: i.toString(),
+        question: t("app.playerName")
+      })))
+  , []);
 
   const freshGame = {
     name: "",
-    playerNames: ["", "", "", "", "", "", "", ""],
+    playerNames: Array(STEPS.length - 1).fill(""),
   };
 
   const [newGame, setNewGame] = useState(freshGame);
@@ -103,6 +94,10 @@ export function SetupScreen({ route, navigation }: Props) {
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
       />
+      <View>
+        <Dice roll={currentIndex} />
+        { currentIndex > 6 && (<Dice roll={currentIndex % 6} />)}
+      </View>
     </View>
   );
 }

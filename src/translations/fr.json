@@ -1,6 +1,6 @@
 {
     "app": {
-        "gameName": "Quel est le nom du jeu ?",
+        "gameName": "Nom du jeu",
         "playerName": "Nom du joueur",
         "cancel": "Annuler",
         "previous": "Retour",
