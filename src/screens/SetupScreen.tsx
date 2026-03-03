@@ -96,23 +96,12 @@ export function SetupScreen({ route, navigation }: Props) {
             onEndConfig={handleEndConfig}
           />
         )}
-        getItemLayout={(data, index) => ({
-          length: SCREEN_WIDTH,
-          offset: SCREEN_WIDTH * index,
-          index,
-        })}
         style={{ flex: 1 }}
         horizontal
         pagingEnabled
         scrollEnabled={false}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{
-          paddingHorizontal: 0, // INTERDIT de mettre du padding ici
-          margin: 0,
-        }}
-        contentInsetAdjustmentBehavior="never"
-        automaticallyAdjustContentInsets={false}
       />
     </View>
   );

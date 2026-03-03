@@ -43,74 +43,74 @@ export const StepItem = ({
         backgroundColor: colors.background,
       }}
     >
-      <View
+      <Surface
         style={{
-          flex: 1,
-          paddingTop: 100,
-          width: SCREEN_WIDTH,
-          height: "100%",
-          alignItems: "center", // <--- C'EST ÇA QUI CENTRE TON CARRÉ BLANC
-          justifyContent: "flex-start", // Garde le marginTop: 100 fonctionnel
-          backgroundColor: colors.background,
+          backgroundColor: "white",
+          marginTop: 100,
+          height: 350,
+          margin: 20,
+          padding: 10,
+          borderRadius: borderRadius.l,
+          borderColor: colors.primary,
+          borderWidth: borderWidth.l,
+          overflow: "hidden",
         }}
+        elevation={5}
       >
-        <Surface
+        <View
           style={{
-            backgroundColor: "white",
-            marginTop: 100,
-            height: 250,
-            width: 200,
-            padding: 10,
-            borderRadius: borderRadius.l,
-            borderColor: colors.primary,
-            borderWidth: borderWidth.l,
+            width: "100%",
+            height: 80,
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          elevation={5}
         >
           <Text
-            style={{ textAlignVertical: "center", textAlign: "center" }}
+            numberOfLines={3}
             variant="headlineSmall"
+            style={{
+              textAlignVertical: "center",
+              textAlign: "center",
+            }}
           >
             {item.question}
           </Text>
-          <TextInput
-            autoFocus={currentIndex === 0}
-            mode="outlined"
-            label=""
-            style={{ marginTop: spacing.s }}
-            onChangeText={onChangeText}
-          />
-          <Surface
-            style={{
-              justifyContent: "space-between",
-              flexDirection: "row",
-              paddingTop: spacing.s,
-            }}
-            elevation={0}
-          >
-            <Button onPress={onCancel}>
-              {currentIndex === 0
-                ? `${t("app.cancel")}`
-                : `${t("app.previous")}`}
+        </View>
+        <TextInput
+          autoFocus={currentIndex === 0}
+          mode="outlined"
+          label=""
+          style={{ marginTop: spacing.s }}
+          onChangeText={onChangeText}
+        />
+        <Surface
+          style={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+            paddingTop: spacing.s,
+          }}
+          elevation={0}
+        >
+          <Button onPress={onCancel}>
+            {currentIndex === 0 ? `${t("app.cancel")}` : `${t("app.previous")}`}
+          </Button>
+          {currentIndex === 0 && (
+            <Button mode="contained" onPress={handleNext}>
+              {t("app.next")}
             </Button>
-            {currentIndex === 0 && (
-              <Button mode="contained" onPress={handleNext}>
-                {t("app.next")}
+          )}
+          {currentIndex > 0 && (
+            <>
+              <Button mode="contained" onPress={handleAddPlayer}>
+                {t("app.add")}
               </Button>
-            )}
-            {currentIndex > 0 && (
-              <>
-                <Button mode="contained" onPress={handleAddPlayer}>
-                  {t("app.add")}
-                </Button>
-                <Button mode="contained" onPress={onEndConfig}>
-                  {t("app.finish")}
-                </Button>
-              </>
-            )}
-          </Surface>
+              <Button mode="contained" onPress={onEndConfig}>
+                {t("app.finish")}
+              </Button>
+            </>
+          )}
         </Surface>
-      </View>
+      </Surface>
     </View>
   );
 };
