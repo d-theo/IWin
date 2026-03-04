@@ -79,6 +79,7 @@ export function SetupScreen({ route, navigation }: Props) {
   return (
     <View style={{ flex: 1, position: "relative" }}>
       <FlatList
+        keyboardShouldPersistTaps="always"
         ref={flatListRef}
         data={STEPS}
         renderItem={({ item }) => (
