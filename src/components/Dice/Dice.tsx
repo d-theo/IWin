@@ -1,4 +1,3 @@
-import { shouldAppear } from "./utils";
 import { StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -7,6 +6,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Dot } from "./Dot";
 import { useEffect, useRef } from "react";
+import { shouldAppear } from "./utils";
 
 const styles = StyleSheet.create({
   dice: {
@@ -24,10 +24,10 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  roll: number
-}
+  roll: number;
+};
 
-export const Dice = ({roll}: Props) => {
+const Dice = ({ roll }: Props) => {
   const rotation = useSharedValue(0);
   const previousRoll = useRef<number>(roll);
   const animatedStyle = useAnimatedStyle(() => {
@@ -39,17 +39,20 @@ export const Dice = ({roll}: Props) => {
   useEffect(() => {
     const prev = previousRoll.current;
     if (prev < roll) {
-      rotation.value = withTiming(rotation.value + 90, { duration: 200 });
+      rotation.value = withTiming(rotation.value + 180, { duration: 300 });
     } else {
-      rotation.value = withTiming(rotation.value - 90, { duration: 200 });
+      rotation.value = withTiming(rotation.value - 180, { duration: 300 });
     }
     previousRoll.current = roll;
   }, [roll]);
 
-  return (<Animated.View style={[styles.dice, animatedStyle]}>
-    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-      <Dot key={n} visible={shouldAppear(n, roll)} />
-    ))}
-  </Animated.View>)
-}
+  return (
+    <Animated.View style={[styles.dice, animatedStyle]}>
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+        <Dot key={n} visible={shouldAppear(n, roll)} />
+      ))}
+    </Animated.View>
+  );
+};
 
+export default Dice;

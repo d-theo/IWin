@@ -8,6 +8,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/types";
 import { AppTheme } from "../theme/theme";
 import { useTranslation } from "react-i18next";
+import { IconButton } from "../components/atoms/IconButton";
 
 const total = (scores: any[]) => scores.reduce((sum, s) => sum + s.value, 0);
 
@@ -30,6 +31,7 @@ export default function GameScreen({ navigation, route }: Props) {
     return null;
   });
   const endGame = useGameStore((s) => s.endGame);
+  const deleteGame = useGameStore((s) => s.deleteGame);
   const addScore = useGameStore((s) => s.addScore);
 
   const [scoreAdder, setScoreAdder] = useState({
@@ -63,6 +65,11 @@ export default function GameScreen({ navigation, route }: Props) {
   const handleEndGame = () => {
     endGame();
     navigation.replace("Home", { shouldSetupNewGame: false });
+  };
+
+  const handleDeleteGame = () => {
+    deleteGame(gameId);
+    navigation.goBack();
   };
 
   if (!game) {
@@ -108,6 +115,22 @@ export default function GameScreen({ navigation, route }: Props) {
         <Button mode="contained" style={{ margin: 40 }} onPress={handleEndGame}>
           {t("app.endGame")}
         </Button>
+      )}
+      {readonly && (
+        <View
+          style={{
+            width: "100%",
+            alignItems: "center",
+            marginBottom: theme.spacing.l,
+          }}
+        >
+          <IconButton
+            variant="secondary"
+            icon="delete"
+            size="l"
+            onPress={handleDeleteGame}
+          />
+        </View>
       )}
     </View>
   );

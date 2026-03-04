@@ -12,6 +12,7 @@ type GameStore = {
   deleteScore: (playerId: string, scoreId: string) => void;
   updateScore: (playerId: string, scoreId: string, value: number) => void;
   gamesHistory: Game[];
+  deleteGame: (id: string) => void;
   checkSessionExpiry: () => void;
   // debug
   clear: () => void;
@@ -73,6 +74,14 @@ export const useGameStore = create(
           game: null,
           gamesHistory: updatedHistory,
         });
+      },
+
+      deleteGame: (id: string) => {
+        const { gamesHistory } = get();
+        const alteredHistory = gamesHistory.filter(
+          (gameHistory) => gameHistory.id !== id,
+        );
+        set({ gamesHistory: alteredHistory });
       },
 
       deleteScore: (playerId, scoreId) => {

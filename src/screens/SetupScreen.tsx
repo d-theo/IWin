@@ -6,7 +6,9 @@ import { useTranslation } from "react-i18next";
 import { useGameStore } from "../store/gameStore";
 import { StepItem } from "../components/Setup/Steps";
 import { Step } from "./GameScreen";
-import { Dice } from "../components/Dice/Dice";
+import Dice from "../components/Dice/Dice";
+import { Surface } from "react-native-paper";
+import { theme } from "../theme/theme";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Setup">;
 export function SetupScreen({ route, navigation }: Props) {
@@ -15,12 +17,15 @@ export function SetupScreen({ route, navigation }: Props) {
 
   const flatListRef = useRef<any>(null);
   const STEPS: Step[] = useMemo(
-    () => [{ id: "1", question: t("app.gameName") }].concat(
-      [2,3,4,5,6,7,8,9,10,11,12,13].map((i) => ({
-        id: i.toString(),
-        question: t("app.playerName")
-      })))
-  , []);
+    () =>
+      [{ id: "1", question: t("app.gameName") }].concat(
+        [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((i) => ({
+          id: i.toString(),
+          question: t("app.playerName"),
+        })),
+      ),
+    [],
+  );
 
   const freshGame = {
     name: "",
@@ -72,7 +77,7 @@ export function SetupScreen({ route, navigation }: Props) {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, position: "relative" }}>
       <FlatList
         ref={flatListRef}
         data={STEPS}
@@ -94,10 +99,22 @@ export function SetupScreen({ route, navigation }: Props) {
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
       />
-      <View>
-        <Dice roll={currentIndex} />
-        { currentIndex > 6 && (<Dice roll={currentIndex % 6} />)}
-      </View>
+      {currentIndex > 0 && (
+        <Surface
+          style={{
+            flexDirection: "row",
+            gap: theme.spacing.s,
+            position: "absolute",
+            zIndex: 10,
+            top: 70,
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <Dice roll={Math.min(currentIndex, 6)} />
+          {currentIndex > 6 && <Dice roll={((currentIndex - 1) % 6) + 1} />}
+        </Surface>
+      )}
     </View>
   );
 }

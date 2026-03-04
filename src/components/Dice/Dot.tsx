@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     backgroundColor: "black",
     margin: 1,
-  }
+  },
 });
 
 type DotProps = {

@@ -40,7 +40,7 @@ export const StepItem = ({
         style={{
           backgroundColor: "white",
           marginTop: 100,
-          height: 350,
+          height: 300,
           margin: 20,
           padding: 10,
           borderRadius: borderRadius.l,
